@@ -1,0 +1,2 @@
+# zetaFold
+This project aims to apply machine learning and artificial intelligence techniques to classify proteins based on their sequence and structure. The proteins are represented by graphs, with nodes representing amino acids and edges representing Euclidean distance, order in the sequence, and chemical interactions between amino acids. The goal is to classify the proteins into 18 different classes based on their location and function.
