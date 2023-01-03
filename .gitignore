@@ -5,3 +5,4 @@ data/sequences.txt
 data/graph_indicator.txt
 data/node_attributes.txt
 .DS_Store
+sample_submission.csv
