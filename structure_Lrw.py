@@ -3,6 +3,7 @@ import time
 import numpy as np
 import scipy.sparse as sp
 from sklearn.metrics import accuracy_score, log_loss
+from utils.loss import criterion
 
 import torch
 import torch.nn as nn
@@ -135,7 +136,7 @@ with open('data/graph_labels.txt', 'r') as f:
 device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
 
 # Hyperparameters
-epochs = 300
+epochs = 50
 batch_size = 64
 n_hidden = 64
 n_input = 86
