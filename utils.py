@@ -105,7 +105,7 @@ def load_data():
     for i in range(graph_size.size):
         adj.append(A[idx_n:idx_n+graph_size[i], idx_n:idx_n+graph_size[i]])
         adj_weight.append(W[idx_n:idx_n+graph_size[i], idx_n:idx_n+graph_size[i]])
-        Flist.append(F[idx_n:idx_n+graph_size[i], idx_n:idx_n+graph_size[i]])
+        Flist.append(F[idx_n:idx_n+graph_size[i], idx_n:idx_n+graph_size[i]].toarray())
         edge_features.append(edge_attr[idx_m:idx_m+adj[i].nnz,:])
         features.append(x[idx_n:idx_n+graph_size[i],:])
         idx_n += graph_size[i]
@@ -114,7 +114,7 @@ def load_data():
     return adj, adj_weight, features, edge_features, Flist
 
 
-def normalize_adjacency(A, W):
+def     normalize_adjacency(A, W):
     """
     Function that normalizes an adjacency matrix and includes edge weights
     """
