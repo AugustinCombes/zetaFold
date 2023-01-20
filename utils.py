@@ -114,7 +114,7 @@ def load_data():
     return adj, adj_weight, features, edge_features, Flist
 
 
-def     normalize_adjacency(A, W):
+def normalize_adjacency(A, W):
     """
     Function that normalizes an adjacency matrix and includes edge weights
     """
