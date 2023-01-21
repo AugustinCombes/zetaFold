@@ -7,7 +7,7 @@ class GTN(nn.Module):
     """
     Encoder-transformer message passing layer
     """
-    def __init__(self, input_dim, hidden_dim, dropout, n_class):
+    def __init__(self, input_dim, hidden_dim, dropout, n_class, device="cuda"):
         super(GTN, self).__init__()
         self.fc1 = nn.Linear(input_dim, hidden_dim)
 
@@ -17,6 +17,8 @@ class GTN(nn.Module):
         self.bn = nn.BatchNorm1d(hidden_dim)
         self.relu = nn.ReLU()
         self.dropout = nn.Dropout(dropout)
+
+        self.device = device
 
     def forward(self, x_in, adj, idx, cum_nodes):
         # first message passing layer as embedding before the transformer encoder message passing layer
@@ -30,7 +32,7 @@ class GTN(nn.Module):
             batch_lists[ind].append(x[i])
 
         padded_batch = pad_sequence([torch.stack(b) for b in batch_lists], batch_first=True)
-        pad_mask = torch.nn.utils.rnn.pad_sequence([torch.zeros(e) for e in cum_nodes], batch_first=True, padding_value=1).type(torch.bool)
+        pad_mask = torch.nn.utils.rnn.pad_sequence([torch.zeros(e) for e in cum_nodes], batch_first=True, padding_value=1).type(torch.bool).to(self.x_in.device)
         
         x = self.fc2(padded_batch, src_key_padding_mask=pad_mask)
         x = torch.vstack([x[j,:c] for j,c in enumerate(cum_nodes)])
