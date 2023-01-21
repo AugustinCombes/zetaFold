@@ -75,7 +75,16 @@ def load_data(data_folder='data'):
         idx_n += graph_size[i]
         idx_m += adj[i].nnz
 
-    return adj, adj_weight, features, edge_features, Flist
+    distance_based = [(A%2).sum(axis=1).reshape(-1,1) for A in Flist]
+    peptide = [(A//10%2).sum(axis=1).reshape(-1,1) for A in Flist]
+    kNN = [(A//100%2).sum(axis=1).reshape(-1,1) for A in Flist]
+    hydrogen = [(A//100%2).sum(axis=1).reshape(-1,1) for A in Flist]
+
+    features = [np.concatenate([features[idx], distance_based[idx], peptide[idx],
+                                kNN[idx], hydrogen[idx]], axis=1)
+                for idx in range(len(features))]
+
+    return adj, adj_weight, features
 
 
 def normalize_adjacency(A, W):
