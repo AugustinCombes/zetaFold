@@ -107,3 +107,20 @@ def submit_predictions(proteins_test, y_pred_proba,
             lst = y_pred_proba[i,:].tolist()
             lst.insert(0, protein)
             writer.writerow(lst)
+
+
+def graph_train_valid_test(adj, adj_weight, features, ref_train, ref_valid, ref_test):
+    """
+    Formats then split graph-related data into train-valid-test
+    """
+    adj = [normalize_adjacency(A, W) for A, W in zip(adj, adj_weight)]
+    adj_shapes = np.array([at.shape[0] for at in adj])
+    adj = np.array([adj[idx] + sp.identity(adj_shapes[idx]) for idx in range(len(adj))])
+
+    features = np.array(features, dtype=object)
+
+    adj_train, adj_valid, adj_test = adj[ref_train], adj[ref_valid], adj[ref_test]
+    features_train, features_valid, features_test = features[ref_train], features[ref_valid], features[ref_test]
+    adj_shapes_train, adj_shapes_valid, adj_shapes_test = adj_shapes[ref_train], adj_shapes[ref_valid], adj_shapes[ref_test]
+
+    return (adj_train, adj_valid, adj_test, features_train, features_valid, features_test, adj_shapes_train, adj_shapes_valid, adj_shapes_test)
