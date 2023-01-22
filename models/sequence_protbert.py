@@ -1,12 +1,13 @@
 import torch.nn.functional as F
 import torch.nn as nn
 from transformers import BertModel, BertTokenizer
-
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 class ProteinClassifier(nn.Module):
     def __init__(self, n_classes, dropout=0.35):
+        self.PRE_TRAINED_MODEL_NAME = 'yarongef/DistilProtBert'
         super(ProteinClassifier, self).__init__()
-        self.bert = BertModel.from_pretrained(PRE_TRAINED_MODEL_NAME).to(device)
+        self.bert = BertModel.from_pretrained(self.PRE_TRAINED_MODEL_NAME).to(device)
         self.classifier = nn.Linear(self.bert.config.hidden_size, n_classes).to(device)
         self.dropout = dropout
         
