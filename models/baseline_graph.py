@@ -15,7 +15,8 @@ class GNN(nn.Module):
         
         self.fc3 = nn.Linear(hidden_dim, hidden_dim)
         self.fc4 = nn.Linear(hidden_dim, n_class)
-        self.bn = nn.BatchNorm1d(hidden_dim)
+        # self.bn = nn.BatchNorm1d(hidden_dim)
+        self.ln = nn.LayerNorm(hidden_dim)
         self.relu = nn.ReLU()
         self.dropout = nn.Dropout(dropout)
 
@@ -35,7 +36,8 @@ class GNN(nn.Module):
         out = out.scatter_add_(0, idx, x)
         
         # batch normalization layer
-        out = self.bn(out)
+        # out = self.bn(out)
+        out = self.ln(out)
 
         # mlp to produce output
         out = self.relu(self.fc3(out))

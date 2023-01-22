@@ -15,7 +15,10 @@ class GTN(nn.Module):
 
         self.fc3 = nn.Linear(hidden_dim, hidden_dim)
         self.fc4 = nn.Linear(hidden_dim, n_class)
+
         # self.bn = nn.BatchNorm1d(hidden_dim)
+        self.ln = nn.LayerNorm(hidden_dim)
+
         self.relu = nn.ReLU()
         self.dropout = nn.Dropout(dropout)
 
@@ -45,6 +48,7 @@ class GTN(nn.Module):
         
         # batch normalization layer
         # out = self.bn(out)
+        out = self.ln(out)
 
         # mlp to produce output
         out = self.dropout(out)
