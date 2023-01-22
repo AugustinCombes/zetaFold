@@ -4,21 +4,20 @@ from transformers import BertModel, BertTokenizer
 
 
 class ProteinClassifier(nn.Module):
-    def __init__(self, n_classes, device='cuda', PRE_TRAINED_MODEL_NAME = 'yarongef/DistilProtBert'):
+    def __init__(self, n_classes, dropout=0.35):
         super(ProteinClassifier, self).__init__()
         self.bert = BertModel.from_pretrained(PRE_TRAINED_MODEL_NAME).to(device)
         self.classifier = nn.Linear(self.bert.config.hidden_size, n_classes).to(device)
-        
-        self.device = device
+        self.dropout = dropout
         
     def forward(self, input_ids, attention_mask):
-        input_ids, attention_mask = input_ids.to(self.device), attention_mask.to(self.device)
+        input_ids, attention_mask = input_ids.to(device), attention_mask.to(device)
         output = self.bert(
           input_ids=input_ids,
           attention_mask=attention_mask
         )
         output = output.last_hidden_state[:, 0, :]
-        output = nn.Dropout(0.2)(output) # 0.3 meilleure submission
+        output = nn.Dropout(self.dropout)(output) # 0.3 meilleure submission
         output = nn.ReLU()(output)
         output = self.classifier(output)
         # output = nn.ReLU()(output)
